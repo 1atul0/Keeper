@@ -1,9 +1,14 @@
 import React ,{useState}from 'react'
+import AddIcon from '@mui/icons-material/Add';
+import { Zoom } from '@mui/material';
+import Fab from '@mui/material/Fab';
 function CreateArea(props){
   const [note,setNote]=useState({
     title:"",
     content:""
   });
+
+  const [isExpanded,setIsExpanded]=useState(false);
   function handleChange(event){
     const {name,value}=event.target;
     //holod the prevValue of tilte or note
@@ -20,11 +25,19 @@ function CreateArea(props){
     event.preventDefault();//stop notes get refreshed after form submit
   }
 
+  function Expand(){
+    setIsExpanded(true);
+  }
+
   return <div>
-   <form>
-    <input onChange={handleChange} name="title" value={note.title}type='text' placeholder='Title'></input>
-    <textarea onChange={handleChange} name="content"  value={note.content}placeholder='Take a note...'></textarea>
-    <button onClick={submitNote}>Add</button>
+   <form className='create-note'>
+    {isExpanded&&<input onChange={handleChange} name="title" value={note.title}type='text' placeholder='Title'></input>}
+    <textarea onChange={handleChange} onClick={Expand} name="content"  value={note.content}placeholder='Take a note...' rows={isExpanded?3:1}></textarea>
+    <Zoom in={true}>
+    <Fab color='primary' onClick={submitNote}>
+      < AddIcon/>
+    </Fab>
+    </Zoom>
    </form>
   </div>
 }
